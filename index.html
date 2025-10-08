@@ -14,7 +14,7 @@
     async function generateSite() {
       const prompt = document.getElementById("prompt").value;
       document.getElementById("output").innerText = "⏳ Generating & Deploying...";
-      const res = await fetch("/api/generate", {
+      const res = await fetch("pages/api/generate.js", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ prompt }),
