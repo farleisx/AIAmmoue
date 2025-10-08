@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AI Website Builder</title>
+  <script>
+    async function generateSite() {
+      const prompt = document.getElementById('prompt').value;
+      document.getElementById('output').innerText = '⏳ Generating...';
+      const res = await fetch('/api/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt })
+      });
+      const data = await res.json();
+      if (data.success) {
+        const iframe = document.getElementById('preview');
+        const htmlFile = data.files.find(f => f.path.endsWith('index.html'));
+        const cssFile = data.files.find(f => f.path.endsWith('style.css'));
+        const jsFile = data.files.find(f => f.path.endsWith('script.js'));
+        const html = `
+          ${htmlFile?.content || ""}
+          <style>${cssFile?.content || ""}</style>
+          <script>${jsFile?.content || ""}</script>
+        `;
+        const doc = iframe.contentWindow.document;
+        doc.open(); doc.write(html); doc.close();
+        document.getElementById('output').innerText = '✅ Website Generated!';
+      } else {
+        document.getElementById('output').innerText = '❌ Error: ' + data.error;
+      }
+    }
+  </script>
+</head>
+<body style="font-family: sans-serif; text-align: center;">
+  <h1>🚀 AI Website Builder</h1>
+  <textarea id="prompt" rows="4" cols="50" placeholder="Describe your website..."></textarea><br><br>
+  <button onclick="generateSite()">Generate</button>
+  <p id="output"></p>
+  <iframe id="preview" style="width:90%;height:400px;border:1px solid #aaa;"></iframe>
+</body>
+</html>
