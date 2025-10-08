@@ -1,32 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>AI Website Builder</title>
-<script>
-  async function generateSite() {
-    const prompt = document.getElementById("prompt").value;
-    document.getElementById("output").innerText = "⏳ Generating and Deploying...";
-    const res = await fetch("/api/generate", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ prompt }),
-    });
-    const data = await res.json();
-    if (data.success && data.deployed) {
-      document.getElementById("output").innerHTML =
-        `✅ Deployed! <a href="${data.url}" target="_blank">${data.url}</a>`;
-    } else {
-      document.getElementById("output").innerText = "❌ Error: " + data.error;
-    }
-  }
-</script>
+  <meta charset="UTF-8" />
+  <title>Ammoue AI Website Builder</title>
 </head>
-<body style="font-family: sans-serif; text-align: center;">
-  <h1>🚀 AI Website Builder</h1>
-  <textarea id="prompt" rows="4" cols="50" placeholder="Describe your website..."></textarea><br><br>
-  <button onclick="generateSite()">Generate</button>
+<body style="font-family: sans-serif; text-align: center; margin-top: 100px;">
+  <h1>⚡ Ammoue AI Website Builder</h1>
+  <textarea id="prompt" rows="4" cols="60" placeholder="Describe your website idea..."></textarea><br><br>
+  <button onclick="generateSite()">Generate & Deploy</button>
   <p id="output"></p>
-  <iframe id="preview" style="width:90%;height:400px;border:1px solid #aaa;"></iframe>
+
+  <script>
+    async function generateSite() {
+      const prompt = document.getElementById("prompt").value;
+      document.getElementById("output").innerText = "⏳ Generating & Deploying...";
+      const res = await fetch("/api/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt }),
+      });
+      const data = await res.json();
+      if (data.success && data.deployed) {
+        document.getElementById("output").innerHTML =
+          `✅ Deployed! <a href="${data.url}" target="_blank">${data.url}</a>`;
+      } else {
+        document.getElementById("output").innerText = "❌ Error: " + data.error;
+      }
+    }
+  </script>
 </body>
 </html>
